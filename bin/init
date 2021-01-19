@@ -1,0 +1,69 @@
+#!/bin/bash
+
+source bin/.env
+gh_repo_addr="gh:$GH_USER/$REPO_NAME"
+
+echo "> Please confirm you want to (re)initialize ${REPO_NAME}" && read
+
+function git_force_push_head() {
+  echo "ℹ️  Pushing to Github" && echo "✅"
+  git push -uf origin HEAD
+}
+function create_or_reset_origin() {
+  echo "ℹ️  Creating or checking for $gh_repo_addr"
+  if gh repo view "$GH_USER/$REPO_NAME" >/dev/null 2>&1; then
+    echo "Repo $gh_repo_addr already exists, adding as remote..."
+    git remote add origin git@github.com:$GH_USER/$REPO_NAME.git
+  else
+    echo "Repo $gh_repo_addr doesn't exists, creating..."
+    gh repo create "$GH_USER/$REPO_NAME" --private
+  fi
+  echo "✅"
+  echo "ℹ️  Check if existing code"
+  git fetch --all
+  git checkout -b old-master origin/master 2>/dev/null && reset_origin
+}
+function reset_origin() {
+  echo "ℹ️  Existing code detected. Archving..."
+  git push origin old-master:archive/$(date +%F)/$(date +'%I-%M-%S') && echo "✅"
+  echo "ℹ️  Resetting repo...."
+  git checkout master
+  git branch -D old-master
+  echo "✅ $gh_repo_addr successfully reset"
+}
+
+function setup() {
+  echo "⚙️  Setting up the package..."
+  cd ${BASE_DIR}
+  rm -rf nohup.log/
+  mkdir nohup.log/
+
+  echo "ℹ️  Building environment"
+  rmvirtualenv ${REPO_NAME}
+  mkproject -f ${REPO_NAME} >>/dev/null && echo "✅"
+  echo
+
+  echo "ᛘ Setting up Git..."
+  git init && git add . && git commit -qm "Initial Commit"
+  echo
+  create_or_reset_origin
+  git_force_push_head
+  echo "✅ Setting up Git: Done"
+  echo
+
+  nohup pip install -r requirements.txt >nohup.log/pip.out 2>&1 &
+
+  echo "✅ Setting up: Done"
+  echo
+}
+
+# Ideas:
+# Write to a log or a document like file all important info and links
+
+direnv allow
+setup
+cd ${BASE_DIR}
+echo "✅ Package initialized successfully"
+echo
+echo "[ ] Please check nohup/ t0 confirm & run $ bin/init_ok"
+echo

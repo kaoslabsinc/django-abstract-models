@@ -1,0 +1,5 @@
+django~=3.1
+
+../dj-kaos-dev-utils/
+../dj-kaos-pkg-dev-utils/
+

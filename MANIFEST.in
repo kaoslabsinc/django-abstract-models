@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+
+graft docs
+
+graft abstract_models/static
+graft abstract_models/templates
+graft abstract_models/*/static
+graft abstract_models/*/templates

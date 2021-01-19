@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source bin/.env
+
+echo "> Please confirm nohup.log/pip.out" && read
+
+cd $BASE_DIR
+rm -rf nohup.log
+rm bin/init
+rm bin/.env
+rm -f bin/init_ok
+git add . && git commit -m "Initialization successful"
+
+echo "✅  Initialization approved"
