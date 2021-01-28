@@ -41,6 +41,9 @@ class HasUUIDAdmin(admin.ModelAdmin):
 
     readonly_fields = ('uuid', 'shortcode',)
     fieldsets = (
+        ("Identifiers", {'fields': ('uuid',)}),
+    )
+    fieldsets_shortcode = (
         ("Identifiers", {'fields': ('uuid', 'shortcode',)}),
     )
 
