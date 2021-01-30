@@ -72,3 +72,13 @@ class HasDescriptionAdmin(admin.ModelAdmin):
 
 # HasXXXAdminMixin():
 #   actions = ...
+
+class TimeStampedModelAdmin(admin.ModelAdmin):
+    list_filter = ('created',)
+    list_filter_extra = ('modified',)
+    list_display = ('created',)
+    list_display_extra = ('modified',)
+    readonly_fields = ('created', 'modified')
+    fieldsets = (
+        ("Timestamps", {'fields': ('created', 'modified')}),
+    )
