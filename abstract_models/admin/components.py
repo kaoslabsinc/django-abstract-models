@@ -39,14 +39,14 @@ class ArchiveableAdmin(admin.ModelAdmin):
 class HasUUIDAdmin(admin.ModelAdmin):
     search_fields = ('uuid',)
     list_display = ('uuid',)
-    list_display_shortcode = ('uuid', 'shortcode',)
+    list_display_shortcode = ('shortcode',)
 
     readonly_fields = ('uuid', 'shortcode',)
     fieldsets = (
         ("Identifiers", {'fields': ('uuid',)}),
     )
     fieldsets_shortcode = (
-        ("Identifiers", {'fields': ('uuid', 'shortcode',)}),
+        ("Identifiers", {'fields': ('shortcode',)}),
     )
 
 
