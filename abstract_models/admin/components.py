@@ -86,3 +86,9 @@ class TimeStampedModelAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Timestamps", {'fields': ('created', 'modified')}),
     )
+
+
+class HasSessionAdminComponent(admin.ModelAdmin):
+    search_fields = ('session_key',)
+    readonly_fields = ('session_key',)
+    fieldsets = (("Session Information", {'fields': ('session_key',)}),)

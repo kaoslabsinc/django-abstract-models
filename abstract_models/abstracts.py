@@ -36,3 +36,10 @@ class HasUUID(models.Model):
     @property
     def shortcode(self):
         return str(self.uuid).split('-')[0]
+
+
+class HasSession(models.Model):
+    class Meta:
+        abstract = True
+
+    session_key = models.CharField(max_length=40)
