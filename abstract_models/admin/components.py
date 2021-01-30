@@ -17,6 +17,7 @@ class HasNameAdmin(admin.ModelAdmin):
 class HasAddressAdmin(admin.ModelAdmin):
     list_display = ('address',)
     search_fields = ('address__raw', 'address_formatted')
+    fields = ('address',)
 
 
 class HasOwnerAdmin(admin.ModelAdmin):
@@ -37,7 +38,8 @@ class ArchiveableAdmin(admin.ModelAdmin):
 
 class HasUUIDAdmin(admin.ModelAdmin):
     search_fields = ('uuid',)
-    list_display = ('uuid', 'shortcode',)
+    list_display = ('uuid',)
+    list_display_shortcode = ('uuid', 'shortcode',)
 
     readonly_fields = ('uuid', 'shortcode',)
     fieldsets = (
@@ -70,8 +72,10 @@ class HasCoverPhotoAdmin(admin.ModelAdmin):
 class HasDescriptionAdmin(admin.ModelAdmin):
     fields = ('description',)
 
+
 # HasXXXAdminMixin():
 #   actions = ...
+
 
 class TimeStampedModelAdmin(admin.ModelAdmin):
     list_filter = ('created',)
